@@ -183,14 +183,6 @@
               </arguments>
             </configuration>
           </execution>
-          <execution>
-            <id>jpackage</id>
-            <phase>package</phase>
-            <goals>
-              <goal>exec</goal>
-            </goals>
-            <!-- configuration 會在 profile 裡覆蓋 -->
-          </execution>
         </executions>
       </plugin>
       <plugin>
