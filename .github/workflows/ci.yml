@@ -14,8 +14,10 @@ jobs:
         include:
           - os: ubuntu-latest
             profile: linux
-            artifact_path: build/jpackage-output/*.tar.gz
-            artifact_name: linux-tarball
+            artifact_path: |
+              target/*.jar
+              target/lib/
+            artifact_name: linux-jar
           - os: macos-latest
             profile: macos
             artifact_path: build/jpackage-output/*.app

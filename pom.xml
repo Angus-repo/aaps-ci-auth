@@ -189,35 +189,7 @@
             <goals>
               <goal>exec</goal>
             </goals>
-            <configuration>
-              <executable>jpackage</executable>
-              <arguments>
-                <argument>--name</argument>
-                <argument>AAPS-CI-Auth</argument>
-                <argument>--input</argument>
-                <argument>target</argument>
-                <argument>--main-jar</argument>
-                <argument>aaps-ci-auth-1.0.jar</argument>
-                <argument>--main-class</argument>
-                <argument>com.aaps.oauth.App</argument>
-                <argument>--type</argument>
-                <argument>${jpackage.type}</argument>
-                <argument>--icon</argument>
-                <argument>src/main/resources/icons/app.icns</argument>
-                <argument>--app-version</argument>
-                <argument>1.0</argument>
-                <argument>--vendor</argument>
-                <argument>AAPS</argument>
-                <argument>--mac-package-identifier</argument>
-                <argument>com.aaps.ci.auth</argument>
-                <argument>--runtime-image</argument>
-                <argument>build/jre-aaps</argument>
-                <argument>--dest</argument>
-                <argument>build/jpackage-output</argument>
-                <argument>--java-options</argument>
-                <argument>-Djava.library.path=$APPDIR/lib</argument>
-              </arguments>
-            </configuration>
+            <!-- configuration 會在 profile 裡覆蓋 -->
           </execution>
         </executions>
       </plugin>
@@ -246,36 +218,94 @@
   <profiles>
     <profile>
       <id>macos</id>
-      <activation>
-        <os>
-          <family>mac</family>
-        </os>
-      </activation>
-      <properties>
-        <jpackage.type>app-image</jpackage.type>
-      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>jpackage</id>
+                <configuration>
+                  <executable>jpackage</executable>
+                  <arguments>
+                    <argument>--name</argument>
+                    <argument>AAPS-CI-Auth</argument>
+                    <argument>--input</argument>
+                    <argument>target</argument>
+                    <argument>--main-jar</argument>
+                    <argument>${artifactId}-${project.version}.jar</argument>
+                    <argument>--main-class</argument>
+                    <argument>com.aaps.oauth.App</argument>
+                    <argument>--type</argument>
+                    <argument>app-image</argument>
+                    <argument>--icon</argument>
+                    <argument>src/main/resources/icons/app.icns</argument>
+                    <argument>--app-version</argument>
+                    <argument>1.0</argument>
+                    <argument>--vendor</argument>
+                    <argument>AAPS</argument>
+                    <argument>--mac-package-identifier</argument>
+                    <argument>com.aaps.ci.auth</argument>
+                    <argument>--runtime-image</argument>
+                    <argument>build/jre-aaps</argument>
+                    <argument>--dest</argument>
+                    <argument>build/jpackage-output</argument>
+                    <argument>--java-options</argument>
+                    <argument>-Djava.library.path=$APPDIR/lib</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
     <profile>
       <id>windows</id>
-      <activation>
-        <os>
-          <family>windows</family>
-        </os>
-      </activation>
-      <properties>
-        <jpackage.type>exe</jpackage.type>
-      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>jpackage</id>
+                <configuration>
+                  <executable>jpackage</executable>
+                  <arguments>
+                    <argument>--name</argument>
+                    <argument>AAPS-CI-Auth</argument>
+                    <argument>--input</argument>
+                    <argument>target</argument>
+                    <argument>--main-jar</argument>
+                    <argument>${artifactId}-${project.version}.jar</argument>
+                    <argument>--main-class</argument>
+                    <argument>com.aaps.oauth.App</argument>
+                    <argument>--type</argument>
+                    <argument>exe</argument>
+                    <argument>--icon</argument>
+                    <argument>src/main/resources/icons/app.ico</argument>
+                    <argument>--app-version</argument>
+                    <argument>1.0</argument>
+                    <argument>--vendor</argument>
+                    <argument>AAPS</argument>
+                    <argument>--runtime-image</argument>
+                    <argument>build/jre-aaps</argument>
+                    <argument>--dest</argument>
+                    <argument>build/jpackage-output</argument>
+                    <argument>--java-options</argument>
+                    <argument>-Djava.library.path=%APPDIR%\lib</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
     <profile>
       <id>linux</id>
-      <activation>
-        <os>
-          <family>unix</family>
-        </os>
-      </activation>
-      <properties>
-        <jpackage.type>app-image</jpackage.type>
-      </properties>
     </profile>
   </profiles>
 </project>
