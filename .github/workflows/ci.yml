@@ -1,0 +1,41 @@
+name: Build All Platforms
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            profile: linux
+            artifact_path: build/jpackage-output/*.tar.gz
+            artifact_name: linux-tarball
+          - os: macos-latest
+            profile: macos
+            artifact_path: build/jpackage-output/*.app
+            artifact_name: macos-app
+          - os: windows-latest
+            profile: windows
+            artifact_path: build/jpackage-output/*.exe
+            artifact_name: windows-exe
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+      - name: Build with Maven
+        run: mvn package -P${{ matrix.profile }}
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact_name }}
+          path: ${{ matrix.artifact_path }}
